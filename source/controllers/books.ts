@@ -11,13 +11,15 @@ const getBooks = async (req: Request, res: Response, next: NextFunction) => {
 }
 
 const addBooks = async (req: Request, res: Response, next: NextFunction) => {
-    const newBook: { title: string; author: string; logo: string } = req.body
+    const newBook: { title: string; author: string } = req.body
 
     const bookToAdd: Books = {
         id: books.length + 1,
         title: newBook.title,
         author: newBook.author,
-        logo: newBook.logo,
+        logo:
+            process.env.LOGO ||
+            'https://www.pngitem.com/pimgs/m/62-622830_png-books-black-and-white-book-logo-transparent.png',
     }
 
     books.push(bookToAdd)
@@ -29,11 +31,7 @@ const addBooks = async (req: Request, res: Response, next: NextFunction) => {
 }
 
 const updateBook = async (req: Request, res: Response, next: NextFunction) => {
-    const {
-        title,
-        author,
-        logo,
-    }: { title?: String; author?: String; logo?: string } = req.body
+    const { title, author }: { title?: String; author?: String } = req.body
     const id: string = req.params.id
     const bookToUpdate: Books | undefined = books.find(
         (book) => book.id === Number(id)
@@ -47,7 +45,6 @@ const updateBook = async (req: Request, res: Response, next: NextFunction) => {
 
     if (title) bookToUpdate.title = title
     if (author) bookToUpdate.author = author
-    if (logo) bookToUpdate.logo = logo
 
     let booksResponse: Array<Books> = books
     return res.status(200).json({

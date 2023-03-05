@@ -18,6 +18,7 @@ const getUsers = async (req: Request, res: Response, next: NextFunction) => {
 
 const signUpUser = async (req: Request, res: Response, next: NextFunction) => {
     const { username, password }: User = req.body
+    console.log(req.body)
     let usersRegistered: Array<User> = JSON.parse(
         fs.readFileSync(USERS_JSON_DIR, 'utf8')
     )
